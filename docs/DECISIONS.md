@@ -26,7 +26,7 @@ The design decisions behind the [Quantum Circuit Execution API](../README.md). E
 ### ADR-004: Delivery Semantics & Task Integrity
 * **Context:** Message brokers require strict acknowledgement semantics to guarantee zero task loss in the event of a worker crash.
 * **Decision:** Rely on Celery's `acks_late=True` alongside a last-write-wins Redis state store.
-* **Consequences:** If a worker crashes, the task is safely redelivered. Because quantum execution is pure compute (side-effect-free) and the state write is last-write-wins, at-least-once redelivery is perfectly safe and converges to one valid result.
+* **Consequences:** If a worker crashes, the task is safely redelivered. Because quantum execution is pure compute (side-effect-free) and the state write is last-write-wins, at-least-once redelivery is perfectly safe and converges to one valid result. This also depends on the broker itself being persistent: Redis runs with AOF (`appendfsync everysec`) on a durable volume, so an unacked message survives a Redis restart too.
 
 <a id="adr-005"></a>
 ### ADR-005: Process-Based Concurrency & Timeouts
@@ -44,7 +44,7 @@ The design decisions behind the [Quantum Circuit Execution API](../README.md). E
 ### ADR-007: Separation of State Store and Task Queue
 * **Context:** Message queues hold transient work; APIs need durable state to query. Beginners often conflate the two.
 * **Decision:** Redis acts as the transient message broker *and* a separate, durable State Store (using Redis Hashes per `task_id`). Results are stored indefinitely for the scope of this assignment.
-* **Consequences:** Satisfies the `GET /tasks/{id}` requirement reliably. *Trade-off:* In a real production environment, unbounded Redis storage is an anti-pattern. We would implement a TTL eviction policy or a background sweeper to migrate historical results to cold storage.
+* **Consequences:** Satisfies the `GET /tasks/{id}` requirement reliably. Redis now runs with AOF (`appendfsync everysec`) plus RDB snapshots on a named Docker volume, so both the state store and the queue survive a Redis container restart with at most ~1s of write loss. *Trade-off:* Retention is a separate concern from durability — storage is still unbounded, which remains an anti-pattern in production. We would implement a TTL eviction policy or a background sweeper to migrate historical results to cold storage.
 
 <a id="adr-008"></a>
 ### ADR-008: REST Hygiene & Inline Routing
