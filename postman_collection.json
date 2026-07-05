@@ -1,0 +1,154 @@
+{
+  "info": {
+    "_postman_id": "a5bdc17c-f6c9-4421-aa14-255890909b67",
+    "name": "Classsiq",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37122202"
+  },
+  "item": [
+    {
+      "name": "Submit Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"qc\": \"OPENQASM 3.0; include \\\"stdgates.inc\\\"; qubit[2] q; bit[2] c; h q[0]; cx q[0], q[1]; c[0] = measure q[0]; c[1] = measure q[1];\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/tasks",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "tasks"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8000/tasks \\\n     -H \"Content-Type: application/json\" \\\n     -d '{\n           \"qc\": \"OPENQASM 3.0; include \\\"stdgates.inc\\\"; qubit[2] q; bit[2] c; h q[0]; cx q[0], q[1]; c[0] = measure q[0]; c[1] = measure q[1];\"\n         }'"
+      },
+      "response": []
+    },
+    {
+      "name": "GET Tasks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/tasks/<YOUR_TASK_ID>",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "tasks",
+            "<YOUR_TASK_ID>"
+          ]
+        },
+        "description": "Generated from cURL: curl -X GET http://localhost:8000/tasks/<YOUR_TASK_ID>"
+      },
+      "response": []
+    },
+    {
+      "name": "Unknown Task",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/tasks/45d1cebd-29c8-46d0-b746-a6280b280e8e",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "tasks",
+            "45d1cebd-29c8-46d0-b746-a6280b280e8e"
+          ]
+        },
+        "description": "Generated from cURL: curl -X GET http://localhost:8000/tasks/<YOUR_TASK_ID>"
+      },
+      "response": []
+    },
+    {
+      "name": "OOM Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"qc\": \"OPENQASM 3.0; qubit[30] q; bit[30] c; h q[0]; c[0] = measure q[0];\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/tasks",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "tasks"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8000/tasks \\\n     -H \"Content-Type: application/json\" \\\n     -d '{\n           \"qc\": \"OPENQASM 3.0; qubit[30] q; bit[30] c; h q[0]; c[0] = measure q[0];\"\n         }' -v"
+      },
+      "response": []
+    },
+    {
+      "name": "Invalid Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"qc\": \"OPENQASM 3.0; include \\\"stdgates.inc\\\"; qubit[2] q; bit[2] c; h q[5];\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8000/tasks",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "tasks"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8000/tasks \\\n     -H \"Content-Type: application/json\" \\\n     -d '{\n           \"qc\": \"OPENQASM 3.0; include \\\"stdgates.inc\\\"; qubit[2] q; bit[2] c; h q[5];\"\n         }'"
+      },
+      "response": []
+    }
+  ]
+}
