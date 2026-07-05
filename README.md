@@ -55,13 +55,16 @@ even though both currently live in Redis (ADR-001, ADR-004).
 ## 2. Running locally
 
 ### Prerequisites
-- Docker and Docker Compose (v2+).
+- Docker and Docker Compose v2 (the `docker compose` plugin, bundled with
+  current Docker Desktop / Engine installs). If you only have the legacy
+  standalone v1 binary, substitute `docker-compose` (hyphenated) for
+  `docker compose` in the commands below.
 - No local Python needed — everything runs in containers.
 
 ### Start
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
 This builds and starts `redis`, `api` (on `http://localhost:8000`), and one or
@@ -89,7 +92,7 @@ more `worker` containers. The API is ready when you see the Uvicorn startup log.
 ### Run the tests
 
 ```bash
-docker-compose run --rm api pytest -v
+docker compose run --rm api pytest -v
 ```
 
 Coverage is summarized in [§7 Testing](#7-testing).
@@ -170,6 +173,13 @@ TASK=$(curl -s -X POST localhost:8000/tasks \
 # Poll
 curl -s localhost:8000/tasks/$TASK | jq
 ```
+
+### Postman collection
+
+A ready-made collection is included at
+[`postman_collection.json`](postman_collection.json) covering Submit Task, GET
+Tasks, Unknown Task, OOM Task, and Invalid Task — import it into Postman as an
+alternative to the curl examples above.
 
 ---
 
@@ -254,7 +264,7 @@ Integration tests (`pytest`, run against the composed stack) cover:
    rejected with `422` by FastAPI's own path-parameter validation.
 
 ```bash
-docker-compose run --rm api pytest -v
+docker compose run --rm api pytest -v
 ```
 
 ---
@@ -265,6 +275,7 @@ docker-compose run --rm api pytest -v
 .
 ├── docker-compose.yml
 ├── README.md
+├── postman_collection.json  # ready-made Postman collection (see §3)
 ├── docs/
 │   └── DECISIONS.md       # full architectural decision records (ADR-001..009)
 ├── api/
